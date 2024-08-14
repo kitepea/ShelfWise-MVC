@@ -18,5 +18,10 @@ namespace WebApp.Controllers
             List<Category> objCategoriesList = _db.Categories.ToList();
             return View(objCategoriesList);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
