@@ -2,7 +2,8 @@
 
 <style>
     .table td, .table th {
-        padding: 15px;
+        padding: 10px;
+        vertical-align: middle;
     }
 </style>
 
@@ -22,6 +23,7 @@
             <tr>
                 <th>Category Name</th>
                 <th>Display Order</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +32,16 @@
                 <tr>
                     <td>@obj.Name</td>
                     <td>@obj.DisplayOrder</td>
+                    <td class="d-flex justify-content-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn mx-2 text-white" style="background-color: #3595fc;">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn mx-2 text-white" style="background-color: red;">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
