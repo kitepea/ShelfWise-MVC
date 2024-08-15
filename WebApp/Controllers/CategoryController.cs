@@ -26,7 +26,16 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            _db.Categories.Add(obj);
+            /*            if (obj.Name == obj.DisplayOrder.ToString())
+                        {
+                            ModelState.AddModelError("name", "Category Name and Display Order can't be the same.");
+                        }*/
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Category");
+            }
             return View();
         }
     }
