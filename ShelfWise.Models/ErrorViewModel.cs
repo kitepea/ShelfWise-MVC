@@ -1,4 +1,4 @@
-namespace WebApp.Models
+namespace ShelfWise.Models
 {
     public class ErrorViewModel
     {

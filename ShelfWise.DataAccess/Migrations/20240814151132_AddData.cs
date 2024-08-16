@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace WebApp.Migrations
+namespace ShelfWise.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddData : Migration

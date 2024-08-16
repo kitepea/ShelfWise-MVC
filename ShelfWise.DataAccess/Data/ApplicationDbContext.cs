@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
+using ShelfWise.Models;
 
-namespace WebApp.Data
+namespace ShelfWise.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {

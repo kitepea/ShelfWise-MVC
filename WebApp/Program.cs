@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp.Data;
+using ShelfWise.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

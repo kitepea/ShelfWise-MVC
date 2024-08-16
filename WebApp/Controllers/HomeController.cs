@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using ShelfWise.Models;
 using System.Diagnostics;
-using WebApp.Models;
 
 namespace WebApp.Controllers
 {

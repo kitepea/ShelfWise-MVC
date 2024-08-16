@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace WebApp.Migrations
+namespace ShelfWise.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class Cate : Migration

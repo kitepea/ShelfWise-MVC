@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApp.Data;
-using WebApp.Models;
+using ShelfWise.DataAccess.Data;
+using ShelfWise.Models;
 
 namespace WebApp.Controllers
 {
