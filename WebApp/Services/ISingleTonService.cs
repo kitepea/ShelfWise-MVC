@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Services
 {
-    public interface ISingleTonService
+    public interface ISingletonService
     {
+        string GetGuid();
     }
 }
