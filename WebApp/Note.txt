@@ -5,3 +5,5 @@
 
 * ModelOnly: Will not display any error messages related to a property like Name or DisplayOrder
 * The data stored in TempData is available for the duration of an HTTP request and persists until it is read
+* internal for same class library
+* https://medium.com/@shahrukhkhan_7802/understanding-the-differences-between-ienumerable-and-iqueryable-in-c-9dbc9ac145f3
