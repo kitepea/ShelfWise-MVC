@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShelfWise.DataAccess.Data;
+using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 
 namespace WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ICategoryRepository _categoryRepo;
 
-        public CategoryController(ApplicationDbContext db)
+        public CategoryController(ICategoryRepository db)
         {
-            _db = db;
+            _categoryRepo = db;
         }
 
         public IActionResult Index()
         {
-            List<Category> objCategoriesList = _db.Categories.ToList();
+            List<Category> objCategoriesList = _categoryRepo.GetAll().ToList();
             return View(objCategoriesList);
         }
 
@@ -32,8 +32,8 @@ namespace WebApp.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _categoryRepo.Add(obj);
+                _categoryRepo.Save();
                 TempData["success"] = "Category added successfully.";
                 return RedirectToAction("Index", "Category");
             }
@@ -46,7 +46,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            Category? obj = _db.Categories.Find(id);
+            Category? obj = _categoryRepo.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
@@ -58,8 +58,8 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _categoryRepo.Update(obj);
+                _categoryRepo.Save();
                 TempData["success"] = "Category updated successfully.";
                 return RedirectToAction("Index", "Category");
             }
@@ -72,7 +72,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            Category? obj = _db.Categories.Find(id);
+            Category? obj = _categoryRepo.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
@@ -83,13 +83,13 @@ namespace WebApp.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? category = _db.Categories.Find(id);
+            Category? category = _categoryRepo.Get(u => u.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(category);
-            _db.SaveChanges();
+            _categoryRepo.Remove(category);
+            _categoryRepo.Save();
             TempData["success"] = "Category deleted successfully.";
             return RedirectToAction("Index", "Category");
         }
