@@ -1,0 +1,7 @@
+﻿- Bootstrap
+- MVC
+- Code first
+- MSSQL
+
+* ModelOnly: Will not display any error messages related to a property like Name or DisplayOrder
+* The data stored in TempData is available for the duration of an HTTP request and persists until it is read
