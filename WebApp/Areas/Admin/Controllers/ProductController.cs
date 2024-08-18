@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 
@@ -22,6 +23,12 @@ namespace WebApp.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryListValue = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+            ViewBag.CategoryListKey = CategoryListValue;
             return View();
         }
         [HttpPost]

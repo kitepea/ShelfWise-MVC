@@ -7,3 +7,4 @@
 * The data stored in TempData is available for the duration of an HTTP request and persists until it is read
 * internal for same class library
 * https://medium.com/@shahrukhkhan_7802/understanding-the-differences-between-ienumerable-and-iqueryable-in-c-9dbc9ac145f3
+*	ViewBag transfers data from the Controller to View, not vice-versa. Ideal for situations in which the temporary data is not in a model. The ViewBag's life only lasts during the current http request. ViewBag values will be null if redirection occurs.
