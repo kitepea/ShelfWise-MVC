@@ -2,8 +2,9 @@
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 
-namespace WebApp.Controllers
+namespace WebApp.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

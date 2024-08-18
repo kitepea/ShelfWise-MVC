@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using ShelfWise.Models;
 using System.Diagnostics;
 
-namespace WebApp.Controllers
+namespace WebApp.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
