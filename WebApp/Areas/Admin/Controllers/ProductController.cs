@@ -28,8 +28,7 @@ namespace WebApp.Areas.Admin.Controllers
                 Text = i.Name,
                 Value = i.Id.ToString()
             });
-            //ViewBag.CategoryListKey = CategoryListValue;
-            ViewData["CategoryListKey"] = CategoryListValue;
+            ViewBag.CategoryListKey = CategoryListValue;
             return View();
         }
         [HttpPost]
