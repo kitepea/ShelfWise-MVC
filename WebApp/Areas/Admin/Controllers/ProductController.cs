@@ -5,19 +5,19 @@ using ShelfWise.Models;
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            List<Category> objCategoriesList = _unitOfWork.Category.GetAll().ToList();
-            return View(objCategoriesList);
+            List<Product> objProductsList = _unitOfWork.Product.GetAll().ToList();
+            return View(objProductsList);
         }
 
         public IActionResult Create()
@@ -25,18 +25,14 @@ namespace WebApp.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(Product obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("name", "Category Name and Display Order can't be the same.");
-            }
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Product.Add(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Category added successfully.";
-                return RedirectToAction("Index", "Category");
+                TempData["success"] = "Product added successfully.";
+                return RedirectToAction("Index", "Product");
             }
             return View();
         }
@@ -47,7 +43,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
+            Product? obj = _unitOfWork.Product.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
@@ -55,14 +51,14 @@ namespace WebApp.Areas.Admin.Controllers
             return View(obj);
         }
         [HttpPost]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(Product obj)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Product.Update(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Category updated successfully.";
-                return RedirectToAction("Index", "Category");
+                TempData["success"] = "Product updated successfully.";
+                return RedirectToAction("Index", "Product");
             }
             return View();
         }
@@ -73,7 +69,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
+            Product? obj = _unitOfWork.Product.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
@@ -84,15 +80,15 @@ namespace WebApp.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? category = _unitOfWork.Category.Get(u => u.Id == id);
-            if (category == null)
+            Product? product = _unitOfWork.Product.Get(u => u.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Product.Remove(product);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully.";
-            return RedirectToAction("Index", "Category");
+            TempData["success"] = "Product deleted successfully.";
+            return RedirectToAction("Index", "Product");
         }
     }
 }
