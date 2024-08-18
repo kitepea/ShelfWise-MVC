@@ -14,7 +14,6 @@ namespace ShelfWise.DataAccess.Repository
             CategoryRepository = new CategoryRepository(_db);
         }
 
-
         public void Save()
         {
             _db.SaveChanges();
