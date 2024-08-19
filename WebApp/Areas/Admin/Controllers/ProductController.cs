@@ -61,7 +61,7 @@ namespace WebApp.Areas.Admin.Controllers
                     {
                         imageFile.CopyTo(fileStreams);
                     }
-                    productViewModel.Product.ImageUrl = @"\images\products\" + fileName;
+                    productViewModel.Product.ImageUrl = @"\images\product\" + fileName;
                 }
                 else
                 {
