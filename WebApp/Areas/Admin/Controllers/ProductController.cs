@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
+using ShelfWise.Models.ViewModels;
 
 namespace WebApp.Areas.Admin.Controllers
 {
@@ -23,25 +24,36 @@ namespace WebApp.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> CategoryListValue = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+            ProductViewModel viewModel = new()
             {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
-            ViewBag.CategoryListKey = CategoryListValue;
-            return View();
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
+            return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Create(Product obj)
+        public IActionResult Create(ProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Product.Add(productViewModel.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product added successfully.";
                 return RedirectToAction("Index", "Product");
             }
-            return View();
+            else
+            {
+                productViewModel.CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                return View(productViewModel);
+            }
         }
 
         public IActionResult Edit(int? id)
