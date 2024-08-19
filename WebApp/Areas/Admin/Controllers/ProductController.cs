@@ -10,10 +10,11 @@ namespace WebApp.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -46,10 +47,30 @@ namespace WebApp.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file)
+        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? imageFile)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath; // Give wwwroot path
+                if (imageFile != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                    var uploads = Path.Combine(wwwRootPath, @"images\product");
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+                    {
+                        imageFile.CopyTo(fileStreams);
+                    }
+                    productViewModel.Product.ImageUrl = @"\images\products\" + fileName;
+                }
+                else
+                {
+                    if (productViewModel.Product.Id != 0)
+                    {
+                        Product objFromDb = _unitOfWork.Product.Get(u => u.Id == productViewModel.Product.Id);
+                        productViewModel.Product.ImageUrl = objFromDb.ImageUrl;
+                    }
+                }
                 _unitOfWork.Product.Add(productViewModel.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product added successfully.";
