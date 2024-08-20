@@ -55,7 +55,16 @@ namespace WebApp.Areas.Admin.Controllers
                 if (imageFile != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                    var uploads = Path.Combine(wwwRootPath, @"images\product");
+                    string uploads = Path.Combine(wwwRootPath, @"images\product");
+
+                    if (!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
+                    {
+                        string oldImagePath = Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
 
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                     {
@@ -63,17 +72,18 @@ namespace WebApp.Areas.Admin.Controllers
                     }
                     productViewModel.Product.ImageUrl = @"\images\product\" + fileName;
                 }
+
+                if (productViewModel.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productViewModel.Product);
+                    TempData["success"] = "Product added successfully.";
+                }
                 else
                 {
-                    if (productViewModel.Product.Id != 0)
-                    {
-                        Product objFromDb = _unitOfWork.Product.Get(u => u.Id == productViewModel.Product.Id);
-                        productViewModel.Product.ImageUrl = objFromDb.ImageUrl;
-                    }
+                    _unitOfWork.Product.Update(productViewModel.Product);
+                    TempData["success"] = "Product updated successfully.";
                 }
-                _unitOfWork.Product.Add(productViewModel.Product);
                 _unitOfWork.Save();
-                TempData["success"] = "Product added successfully.";
                 return RedirectToAction("Index", "Product");
             }
             else

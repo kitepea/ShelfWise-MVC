@@ -11,6 +11,7 @@
     <div class="card-body p-4">
         <form class="row" method="post" enctype="multipart/form-data">
             <input asp-for="Product.Id" hidden />
+            <input asp-for="Product.ImageUrl" hidden /> @* Adding this because other input is for file not for ImageUrl string *@
             <div class="row">
                 <div class="col-10">
                     <div class="p-2">
