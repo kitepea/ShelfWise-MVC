@@ -43,7 +43,7 @@
                         <td>@obj.ISBN</td>
                         <td>@obj.Price</td>
                         <td>@obj.Author</td>
-                        <td></td>
+                        <td>@obj.Category.Name</td>
                         <td class="d-flex justify-content-center">
                             <div class="w-100 btn-group" role="group">
                                 <a asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-primary mx-2 w-25 px-0">
