@@ -4,9 +4,20 @@
 - MSSQL
 
 * ModelOnly: Will not display any error messages related to a property like Name or DisplayOrder
+
 * The data stored in TempData is available for the duration of an HTTP request and persists until it is read
+
 * internal for same class library
+
 * https://medium.com/@shahrukhkhan_7802/understanding-the-differences-between-ienumerable-and-iqueryable-in-c-9dbc9ac145f3
+
 * ViewBag transfers data from the Controller to View, not vice-versa. Ideal for situations in which the temporary data is not in a model. The ViewBag's life only lasts during the current http request. ViewBag values will be null if redirection occurs.
+
 * Hidden Id is used to populate the Id of the passing edit object, we are passing throught Id in the URL so Id still have the value, but if not, the Id will be 0 or null, it will create the new one instead of updating the existing one. Passing it in the form makes it more secure.
+
 * A FileStream is created to write the file to the specified path. 
+
+* $(document).ready() ensures your jQuery code runs only after the DOM is fully loaded.
+ // Accessing the DOM elements
+    var header = document.getElementById("header");
+    var button = document.getElementById("changeText");
