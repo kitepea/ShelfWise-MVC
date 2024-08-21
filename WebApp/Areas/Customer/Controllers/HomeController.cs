@@ -23,6 +23,12 @@ namespace WebApp.Areas.Customer.Controllers
             return View(products);
         }
 
+        public IActionResult Detail(int productId)
+        {
+            Product product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category");
+            return View(product);
+        }
+
         public IActionResult Privacy()
         {
             return View();
