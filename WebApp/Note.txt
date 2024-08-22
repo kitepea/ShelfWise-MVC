@@ -2,6 +2,8 @@
 - MVC
 - Code first
 - MSSQL
+- Identity
+- toastr, tinymce, datatables, jquery
 
 * ModelOnly: Will not display any error messages related to a property like Name or DisplayOrder
 
