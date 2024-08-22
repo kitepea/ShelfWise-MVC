@@ -57,7 +57,7 @@ namespace WebApp.Areas.Admin.Controllers
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
                     string uploads = Path.Combine(wwwRootPath, @"images\product");
 
-                    if (!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
+                    if (!String.IsNullOrEmpty(productViewModel.Product.ImageUrl))
                     {
                         string oldImagePath = Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
                         if (System.IO.File.Exists(oldImagePath))
