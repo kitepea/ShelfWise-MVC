@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShelfWise.DataAccess\ShelfWise.DataAccess.csproj" />
+    <ProjectReference Include="..\ShelfWise.Utils\ShelfWise.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
