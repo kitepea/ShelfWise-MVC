@@ -23,3 +23,9 @@
  // Accessing the DOM elements
     var header = document.getElementById("header");
     var button = document.getElementById("changeText");
+
+*   shift alt 0
+    shift alt s
+    alt g alt left arrow
+    shift alt g
+    shift alt h
