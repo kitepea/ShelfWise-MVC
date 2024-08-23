@@ -11,9 +11,13 @@ for details on configuring this project to bundle and minify static web assets. 
     box-shadow: 0 -2px;
 }
 
+.form-floating > label::after {
+    background-color: transparent !important;
+}
+
 a.link {
     color: #0077cc;
-    text-decoration: inherit;
+    text-decoration: none;
 }
 
 a.navbar-brand {
