@@ -1,52 +1,61 @@
 ﻿@page
 @model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
 
-<div class="card shadow border-0 my-4">
-    <div class="card-header bg-gradient ms-0 py-4" style="background-color: #626ed4">
-        <div class="row">
-            <div class="col-12 text-center">
-                @if (User.IsInRole(StaticDetails.Role_Admin))
-                {
-                    <h1 class="text-white fw-semibold">REGISTER - ADMIN PORTAL</h1>
-                }
-                else
-                {
-                    <h1 class="text-white fw-semibold">REGISTER</h1>
-                }
-            </div>
+<div class="card shadow border-0 my-4 rounded">
+    <div class="row g-0">
+        <div class="col-md-5 d-none d-md-block">
+            <img src="https://images.unsplash.com/photo-1518373714866-3f1478910cc0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="w-100 h-100" style="object-fit:cover; border-radius: 0.375rem" alt="Image on Register" />
         </div>
-    </div>
-    <div class="card-body p-4">
-        <div class="col-12 pt-3">
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="row">
-                <h3 class="text-center">Create a new account.</h3>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3 col-md-12">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <div class="col-md-7">
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    @if (User.IsInRole(StaticDetails.Role_Admin))
+                    {
+                        <h1 class=" fw-semibold">REGISTER - ADMIN PORTAL</h1>
+                    }
+                    else
+                    {
+                        <h1 class=" fw-semibold">REGISTER</h1>
+                    }
                 </div>
-                <div class="form-floating mb-3 col-md-6">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="ms-2 text-muted">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3 col-md-6">
-                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3 col-md-6">
-                    <select asp-for="Input.Role" asp-items="@Model.Input.RoleList.OrderBy(r => r.Text)" class="form-select">
-                        <option selected disabled>-Select Role-</option>
-                    </select>
-                </div>
+            </div>
+            <div style="border: 1.3px solid #000000; margin: 0px 25px;" ></div>
+            <div class="card-body p-4">
                 <div class="col-12">
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="row">
+                        <h3 class="text-center">Create a new account.</h3>
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="form-floating mb-3 col-md-12">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password" class="ms-2 text-muted">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList.OrderBy(r => r.Text)" class="form-select">
+                                <option selected disabled>-Select Role-</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                        </div>
+                        <p class="divider-text d-flex pt-3">OR</p>
+                    </form>
                 </div>
-                <p class="divider-text d-flex pt-4">OR</p>
-            </form>
+            </div>
         </div>
     </div>
 </div>
