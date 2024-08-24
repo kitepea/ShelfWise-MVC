@@ -44,9 +44,21 @@ namespace WebApp.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value; // Find UserId of logged in user
             shoppingCart.ApplicationUserId = userId;
 
-            _unitOfWork.ShoppingCart.Add(shoppingCart);
-            _unitOfWork.Save();
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(
+                u => u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId
+            ); // When retrieving cart from EF Core, it will observe changes on the object, even if we remove the update method
 
+            if (cartFromDb != null)
+            {
+                cartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+            else
+            {
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            }
+            TempData["success"] = "Item added to cart successfully!";
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 

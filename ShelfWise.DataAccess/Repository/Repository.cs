@@ -21,9 +21,11 @@ namespace ShelfWise.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query;
+            query = tracked ? dbSet : dbSet.AsNoTracking();
+
             query = query.Where(filter);
             if (!String.IsNullOrEmpty(includeProperties))
             {
