@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace WebApp.Areas.Customer.Controllers
 {
@@ -25,8 +27,27 @@ namespace WebApp.Areas.Customer.Controllers
 
         public IActionResult Detail(int productId)
         {
-            Product product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category");
-            return View(product);
+            ShoppingCart cart = new()
+            {
+                Product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category"),
+                ProductId = productId,
+                Count = 1,
+            };
+            return View(cart);
+        }
+
+        [HttpPost]
+        [Authorize] // Home is for both logged in and guest, and we need UserId
+        public IActionResult Detail(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value; // Find UserId of logged in user
+            shoppingCart.ApplicationUserId = userId;
+
+            _unitOfWork.ShoppingCart.Add(shoppingCart);
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
