@@ -37,6 +37,10 @@ namespace WebApp.Areas.Customer.Controllers
             return View(ShoppingCartViewModel);
         }
 
+        public IActionResult Summary(int shoppingCartVMId)
+        {
+            return View();
+        }
         public IActionResult Plus(int cartId)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
