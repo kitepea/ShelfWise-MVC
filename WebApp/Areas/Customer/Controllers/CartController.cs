@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShelfWise.DataAccess.Repository.IRepository;
+using ShelfWise.Models;
 using ShelfWise.Models.ViewModels;
 using System.Security.Claims;
 
@@ -26,7 +27,30 @@ namespace WebApp.Areas.Customer.Controllers
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product")
             };
+
+            foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+                ShoppingCartViewModel.OrderTotal += (cart.Price * cart.Count);
+            }
+
             return View(ShoppingCartViewModel);
+        }
+
+        private double GetPriceBasedOnQuantity(ShoppingCart cart)
+        {
+            if (cart.Count <= 50)
+            {
+                return cart.Product.Price;
+            }
+            else if (cart.Count <= 100)
+            {
+                return cart.Product.Price50;
+            }
+            else
+            {
+                return cart.Product.Price100;
+            }
         }
     }
 }
