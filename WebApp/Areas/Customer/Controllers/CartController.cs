@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 using ShelfWise.Models.ViewModels;
+using ShelfWise.Utils;
 using System.Security.Claims;
 
 namespace WebApp.Areas.Customer.Controllers
@@ -12,6 +13,7 @@ namespace WebApp.Areas.Customer.Controllers
 	public class CartController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
+		[BindProperty]
 		public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
 
 		public CartController(IUnitOfWork unitOfWork)
@@ -61,6 +63,58 @@ namespace WebApp.Areas.Customer.Controllers
 			{
 				cart.Price = GetPriceBasedOnQuantity(cart);
 				ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+			}
+
+			return View(ShoppingCartViewModel);
+		}
+
+		[HttpPost]
+		[ActionName("Summary")]
+		public IActionResult SummaryPOST(ShoppingCartViewModel shoppingCartViewModel)
+		{
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+			ShoppingCartViewModel.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product");
+
+			ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
+			ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
+
+			ShoppingCartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+			foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+			{
+				cart.Price = GetPriceBasedOnQuantity(cart);
+				ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+			}
+
+			if (ShoppingCartViewModel.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+			{
+				// Regular, not company
+				ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusPending;
+				ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
+			}
+			else
+			{
+				// Company, Net 30
+				ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusApproved;
+				ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDelayedPayment;
+			}
+
+			_unitOfWork.OrderHeader.Add(ShoppingCartViewModel.OrderHeader);
+			_unitOfWork.Save();
+
+			foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+			{
+				OrderDetail orderDetail = new()
+				{
+					OrderHeaderId = ShoppingCartViewModel.OrderHeader.Id,
+					ProductId = cart.ProductId,
+					Price = cart.Price,
+					Count = cart.Count
+				};
+				_unitOfWork.OrderDetails.Add(orderDetail);
+				_unitOfWork.Save();
 			}
 
 			return View(ShoppingCartViewModel);
