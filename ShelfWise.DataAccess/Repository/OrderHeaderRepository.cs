@@ -41,6 +41,7 @@ namespace ShelfWise.DataAccess.Repository
             if (!String.IsNullOrEmpty(paymentIntentId))
             {
                 orderFromDb.PaymentIntentId = paymentIntentId;
+                orderFromDb.PaymentDate = DateTime.Now;
             }
         }
     }
