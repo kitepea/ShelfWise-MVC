@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>500326a5-2e26-447c-9a30-10397c76336f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+    <PackageReference Include="Stripe.net" Version="45.9.0" />
     <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
   </ItemGroup>
 
