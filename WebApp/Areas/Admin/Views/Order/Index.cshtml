@@ -1,0 +1,36 @@
+﻿<style>
+    .table td, .table th {
+        padding: 5px;
+        vertical-align: middle;
+    }
+</style>
+
+<div class="card mx-auto shadow border-0 my-4 col-12 col-md-11">
+    <div class="card-header p-0 bg-primary bg-gradient" style="background-color: #7885FF">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="py-2 fw-semibold text-white">Order List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4 pt-3 table-responsive">
+
+        <table id="orderTable" class="table table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/order.js"></script>
+}
