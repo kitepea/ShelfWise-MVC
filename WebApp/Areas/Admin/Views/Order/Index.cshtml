@@ -3,16 +3,6 @@
         padding: 5px;
         vertical-align: middle;
     }
-
-    .first-child {
-        border-top-left-radius: 1rem !important;
-        border-bottom-left-radius: 1rem !important;
-    }
-
-    .last-child {
-        border-top-right-radius: 1rem !important;
-        border-bottom-right-radius: 1rem !important;
-    }
 </style>
 
 @{
@@ -23,7 +13,7 @@
     var completed = "text-primary";
     var all = "text-primary";
 
-    switch(status)
+    switch (status)
     {
         case "pending":
             pending = "active text-white bg-blue";
