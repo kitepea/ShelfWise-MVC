@@ -3,7 +3,45 @@
         padding: 5px;
         vertical-align: middle;
     }
+
+    .first-child {
+        border-top-left-radius: 1rem !important;
+        border-bottom-left-radius: 1rem !important;
+    }
+
+    .last-child {
+        border-top-right-radius: 1rem !important;
+        border-bottom-right-radius: 1rem !important;
+    }
 </style>
+
+@{
+    var status = Context.Request.Query["status"];
+    var pending = "text-primary";
+    var inprocess = "text-primary";
+    var approved = "text-primary";
+    var completed = "text-primary";
+    var all = "text-primary";
+
+    switch(status)
+    {
+        case "pending":
+            pending = "active text-white bg-blue";
+            break;
+        case "inprocess":
+            inprocess = "active text-white bg-blue";
+            break;
+        case "approved":
+            approved = "active text-white bg-blue";
+            break;
+        case "completed":
+            completed = "active text-white bg-blue";
+            break;
+        default:
+            all = "active text-white bg-blue";
+            break;
+    }
+}
 
 <div class="card mx-auto shadow border-0 my-4 col-12 col-md-11">
     <div class="card-header p-0 bg-primary bg-gradient" style="background-color: #7885FF">
@@ -14,7 +52,26 @@
         </div>
     </div>
     <div class="card-body p-4 pt-3 table-responsive">
-
+        <div class="d-flex justify-content-between pb-5 pt-2">
+            <span></span>
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration: none" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+                <li class="list-group-item @inprocess first-child">In Process</li>
+                </a>
+                <a style="text-decoration: none" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+                <li class="list-group-item @pending">Payment Pending</li>
+                </a>
+                <a style="text-decoration: none" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+                <li class="list-group-item @completed">Completed</li>
+                </a>
+                <a style="text-decoration: none" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+                <li class="list-group-item @approved">Approved</li>
+                </a>
+                <a style="text-decoration: none" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                <li class="list-group-item @all last-child">All</li>
+                </a>
+            </ul>
+        </div>
         <table id="orderTable" class="table table-bordered table-striped w-100">
             <thead>
                 <tr>

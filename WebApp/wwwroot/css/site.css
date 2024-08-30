@@ -101,7 +101,9 @@ bg-success {
     background-color: #4b7147 !important;
 }
 
-
+.bg-blue {
+    background-color: #0d6efd !important;
+}
 
 .card {
     border-color: #425F4B !important;
