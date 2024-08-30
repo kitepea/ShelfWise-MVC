@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
+using ShelfWise.Models.ViewModels;
 using ShelfWise.Utils;
 
 namespace WebApp.Areas.Admin.Controllers
@@ -18,6 +19,16 @@ namespace WebApp.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Details(int orderId)
+        {
+            OrderViewModel orderViewModel = new OrderViewModel()
+            {
+                OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
+                OrderDetails = _unitOfWork.OrderDetails.GetAll(o => o.OrderHeaderId == orderId, includeProperties: "Product")
+            };
+            return View(orderViewModel);
         }
 
         #region API CALLS
