@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 using ShelfWise.Models.ViewModels;
@@ -10,6 +11,8 @@ namespace WebApp.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        [BindProperty]
+        public OrderViewModel OrderViewModel { get; set; }
 
         public OrderController(IUnitOfWork unitOfWork)
         {
@@ -23,12 +26,40 @@ namespace WebApp.Areas.Admin.Controllers
 
         public IActionResult Details(int orderId)
         {
-            OrderViewModel orderViewModel = new OrderViewModel()
+            OrderViewModel = new OrderViewModel()
             {
                 OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
                 OrderDetails = _unitOfWork.OrderDetails.GetAll(o => o.OrderHeaderId == orderId, includeProperties: "Product")
             };
-            return View(orderViewModel);
+            return View(OrderViewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
+        public IActionResult UpdateOrderDetail()
+        {
+            var orderHeaderFromDb = _unitOfWork.OrderHeader.Get(u => u.Id == OrderViewModel.OrderHeader.Id);
+            orderHeaderFromDb.Name = OrderViewModel.OrderHeader.Name;
+            orderHeaderFromDb.PhoneNumber = OrderViewModel.OrderHeader.PhoneNumber;
+            orderHeaderFromDb.StreetAddress = OrderViewModel.OrderHeader.StreetAddress;
+            orderHeaderFromDb.City = OrderViewModel.OrderHeader.City;
+            orderHeaderFromDb.State = OrderViewModel.OrderHeader.State;
+            orderHeaderFromDb.PostalCode = OrderViewModel.OrderHeader.PostalCode;
+
+            if (!String.IsNullOrEmpty(OrderViewModel.OrderHeader.Carrier))
+            {
+                orderHeaderFromDb.Carrier = OrderViewModel.OrderHeader.Carrier;
+            }
+            if (!String.IsNullOrEmpty(OrderViewModel.OrderHeader.TrackingNumber))
+            {
+                orderHeaderFromDb.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
+            }
+            _unitOfWork.OrderHeader.Update(orderHeaderFromDb);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Order details updated successfully";
+
+            return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id });
         }
 
         #region API CALLS
