@@ -4,6 +4,7 @@ using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
 using ShelfWise.Models.ViewModels;
 using ShelfWise.Utils;
+using System.Security.Claims;
 
 namespace WebApp.Areas.Admin.Controllers
 {
@@ -67,7 +68,18 @@ namespace WebApp.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status)
         {
-            IEnumerable<OrderHeader> orderHeaders = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser").ToList();
+            IEnumerable<OrderHeader> orderHeaders;
+
+            if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+            {
+                orderHeaders = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser").ToList();
+            }
+            else
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                orderHeaders = _unitOfWork.OrderHeader.GetAll(u => u.ApplicationUserId == userId, includeProperties: "ApplicationUser").ToList();
+            }
 
             switch (status)
             {
