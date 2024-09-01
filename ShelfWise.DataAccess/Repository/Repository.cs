@@ -24,7 +24,7 @@ namespace ShelfWise.DataAccess.Repository
         public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;
-            query = tracked ? dbSet : dbSet.AsNoTracking();
+            query = tracked ? dbSet : dbSet.AsNoTracking(); // #NOTE: AsNoTracking() prevents EF from tracking changes to the entity when getting it from the database
 
             query = query.Where(filter);
             if (!String.IsNullOrEmpty(includeProperties))
