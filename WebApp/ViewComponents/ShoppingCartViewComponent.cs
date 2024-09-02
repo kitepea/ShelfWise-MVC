@@ -14,7 +14,7 @@ namespace WebApp.ViewComponents
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IViewComponentResult> InVokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -26,8 +26,6 @@ namespace WebApp.ViewComponents
                     HttpContext.Session.SetInt32(StaticDetails.SessionCart,
                                        _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
                 }
-                HttpContext.Session.SetInt32(StaticDetails.SessionCart,
-                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
                 return View(HttpContext.Session.GetInt32(StaticDetails.SessionCart));
             }
             else

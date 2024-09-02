@@ -4,6 +4,7 @@
 - MSSQL
 - Identity
 - toastr, tinymce, datatables, jquery
+- view components
 
 * ModelOnly: Will not display any error messages related to a property like Name or DisplayOrder
 
