@@ -198,9 +198,12 @@ namespace WebApp.Areas.Customer.Controllers
 
         public IActionResult Minus(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId, tracked: true);
             if (cartFromDb.Count <= 1)
             {
+                // Remove Cart Item from Cart
+                HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -215,8 +218,10 @@ namespace WebApp.Areas.Customer.Controllers
 
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
-            _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId, tracked: true);
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
+            _unitOfWork.ShoppingCart.Remove(cartFromDb); // #NOTE: Because of notracking in get, here in remove, cartFromDb is not tracked by EF Core
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
