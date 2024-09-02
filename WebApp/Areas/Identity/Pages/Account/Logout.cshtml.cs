@@ -22,7 +22,7 @@ namespace WebApp.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
-            HttpContext.Session.Clear();
+            //HttpContext.Session.Clear();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
