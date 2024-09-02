@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShelfWise.DataAccess.Repository.IRepository;
 using ShelfWise.Models;
+using ShelfWise.Utils;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -37,7 +38,7 @@ namespace WebApp.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        [Authorize] // Home is for both logged in and guest, and we need UserId
+        [Authorize] // We need UserId in order to add items to cart
         public IActionResult Detail(ShoppingCart shoppingCart)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -52,13 +53,15 @@ namespace WebApp.Areas.Customer.Controllers
             {
                 cartFromDb.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
             }
             else
             {
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
             }
             TempData["success"] = "Item added to cart successfully!";
-            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
