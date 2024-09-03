@@ -82,51 +82,56 @@
                             <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                         </div>
 
-                        <div class="form-floating mb-3 col-md-6">
-                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
-                                <option selected disabled>-Select Role-</option>
-                            </select>
-                        </div>
+                        @if (User.IsInRole(StaticDetails.Role_Admin))
+                        {
+                            <div class="form-floating mb-3 col-md-6">
+                                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                                    <option selected disabled>-Select Role-</option>
+                                </select>
+                            </div>
 
-                        <div class="form-floating mb-3 col-md-6">
-                            <select asp-for="Input.CompanyId" style="display: none" asp-items="@Model.Input.CompanyList" class="form-select">
-                                <option selected disabled>-Select Company-</option>
-                            </select>
-                        </div>
-
+                            <div class="form-floating mb-3 col-md-6">
+                                <select asp-for="Input.CompanyId" style="display: none" asp-items="@Model.Input.CompanyList" class="form-select">
+                                    <option selected disabled>-Select Company-</option>
+                                </select>
+                            </div>
+                        }
                         <div class="col-12 mt-4">
                             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
                         </div>
-                        <p class="divider-text d-flex pt-3">OR</p>
                     </form>
-                    <section class="text-center p-2">
-                        @{
-                            if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                            {
-                                <div>
-                                    <p>
-                                        There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                            article
-                                            about setting up this ASP.NET application to support logging in via external services
-                                        </a>.
-                                    </p>
-                                </div>
-                            }
-                            else
-                            {
-                                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    @if (!User.IsInRole(StaticDetails.Role_Admin))
+                    {
+                        <section class="text-center p-2">
+                            <p class="divider-text d-flex pt-3">OR</p>
+                            @{
+                                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                                {
                                     <div>
                                         <p>
-                                            @foreach (var provider in Model.ExternalLogins!)
-                                            {
-                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                            }
+                                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                                article
+                                                about setting up this ASP.NET application to support logging in via external services
+                                            </a>.
                                         </p>
                                     </div>
-                                </form>
+                                }
+                                else
+                                {
+                                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                        <div>
+                                            <p>
+                                                @foreach (var provider in Model.ExternalLogins!)
+                                                {
+                                                    <button type="submit" class="btn text-white col-6 col-md-4" style="background-color:#1877F2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                }
+                                            </p>
+                                        </div>
+                                    </form>
+                                }
                             }
-                        }
-                    </section>
+                        </section>
+                    }
                 </div>
             </div>
         </div>
