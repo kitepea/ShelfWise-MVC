@@ -18,4 +18,8 @@
     <ProjectReference Include="..\ShelfWise.Models\ShelfWise.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DbInitializer\" />
+  </ItemGroup>
+
 </Project>
