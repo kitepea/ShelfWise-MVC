@@ -5,6 +5,7 @@
 - Identity
 - toastr, tinymce, datatables, jquery
 - view components
+- postmark for email sender
 
 * ModelOnly: Will not display any error messages related to a property like Name or DisplayOrder
 
