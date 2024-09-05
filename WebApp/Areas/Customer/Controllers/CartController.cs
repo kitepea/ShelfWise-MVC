@@ -126,7 +126,7 @@ namespace WebApp.Areas.Customer.Controllers
             {
                 // Regular, not company; Adding stripe logic
 
-                var domain = "https://localhost:7212/";
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
                 var options = new SessionCreateOptions
                 {
                     SuccessUrl = domain + $"customer/cart/OrderConfirmation?orderId={ShoppingCartViewModel.OrderHeader.Id}",

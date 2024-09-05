@@ -130,7 +130,7 @@ namespace WebApp.Areas.Admin.Controllers
             OrderViewModel.OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderViewModel.OrderHeader.Id, includeProperties: "ApplicationUser");
             OrderViewModel.OrderDetails = _unitOfWork.OrderDetails.GetAll(o => o.OrderHeaderId == OrderViewModel.OrderHeader.Id, includeProperties: "Product");
 
-            var domain = "https://localhost:7212/";
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
             var options = new SessionCreateOptions
             {
                 SuccessUrl = domain + $"admin/order/PaymentConfirmation?orderHeaderId={OrderViewModel.OrderHeader.Id}",
