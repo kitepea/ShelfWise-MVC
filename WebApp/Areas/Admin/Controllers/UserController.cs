@@ -34,7 +34,7 @@ namespace WebApp.Areas.Admin.Controllers
             foreach (var user in allUserList)
             {
                 var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
-                var role = roles.FirstOrDefault(u => u.Id == roleId);
+                user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
             }
             return Json(new { data = allUserList });
         }
