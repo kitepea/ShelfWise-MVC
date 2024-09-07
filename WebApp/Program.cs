@@ -28,7 +28,7 @@ builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
 {
     facebookOptions.AppId = builder.Configuration.GetSection("Facebook:AppId").Get<string>();
     facebookOptions.AppSecret = builder.Configuration.GetSection("Facebook:AppSecret").Get<string>();
-    facebookOptions.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    facebookOptions.AccessDeniedPath = $"/";
 });
 
 builder.Services.AddDistributedMemoryCache();
