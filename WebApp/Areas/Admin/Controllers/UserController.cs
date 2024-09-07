@@ -39,10 +39,25 @@ namespace WebApp.Areas.Admin.Controllers
             return Json(new { data = allUserList });
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int? id)
+        [HttpPost]
+        public IActionResult LockUnlock([FromBody] string id)
         {
+            var user = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Error while Locking/Unlocking" });
+            }
 
+            // User is locked
+            if (user.LockoutEnd != null && user.LockoutEnd > DateTime.Now)
+            {
+                user.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                user.LockoutEnd = DateTime.Now.AddYears(6969);
+            }
+            _db.SaveChanges();
             return Json(new { success = true, message = "Delete successfully" });
         }
         #endregion
