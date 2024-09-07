@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShelfWise.DataAccess.Data;
 using ShelfWise.Models;
+using ShelfWise.Models.ViewModels;
 using ShelfWise.Utils;
 
 namespace WebApp.Areas.Admin.Controllers
@@ -21,6 +23,27 @@ namespace WebApp.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult RoleManagement(string userId)
+        {
+            string roleId = _db.UserRoles.FirstOrDefault(u => u.UserId == userId).RoleId;
+            RoleManagementViewModel roleVM = new()
+            {
+                ApplicationUser = _db.ApplicationUsers.Include(u => u.Company).FirstOrDefault(u => u.Id == userId),
+                RoleList = _db.Roles.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Name
+                }).ToList(),
+                CompanyList = _db.Companies.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }).ToList()
+            };
+            roleVM.ApplicationUser.Role = _db.Roles.FirstOrDefault(u => u.Id == roleId).Name;
+            return View(roleVM);
         }
 
         #region API CALLS
@@ -42,6 +65,7 @@ namespace WebApp.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult LockUnlock([FromBody] string id)
         {
+            string message;
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
@@ -52,13 +76,15 @@ namespace WebApp.Areas.Admin.Controllers
             if (user.LockoutEnd != null && user.LockoutEnd > DateTime.Now)
             {
                 user.LockoutEnd = DateTime.Now;
+                message = "UnLock successfully";
             }
             else
             {
                 user.LockoutEnd = DateTime.Now.AddYears(6969);
+                message = "Lock successfully";
             }
             _db.SaveChanges();
-            return Json(new { success = true, message = "Delete successfully" });
+            return Json(new { success = true, message = message });
         }
         #endregion
 
