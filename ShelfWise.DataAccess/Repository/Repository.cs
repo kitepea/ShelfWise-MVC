@@ -35,7 +35,7 @@ namespace ShelfWise.DataAccess.Repository
                     query = query.Include(incluseProp);
                 }
             }
-            return query.FirstOrDefault();
+            return query.FirstOrDefault(); // This trigger tracking()
         }
 
         // Category, OtherType
