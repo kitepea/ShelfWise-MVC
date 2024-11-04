@@ -112,15 +112,15 @@ Fill in the required fields in `appsettings.json`:
     "DefaultConnection": "Connection_String"
   },
   "Stripe": {
-    "SecretKey": Stripe_SecretKey,
-    "PublishableKey": Stripe_PublishableKey
+    "SecretKey": "Stripe_SecretKey",
+    "PublishableKey": "Stripe_PublishableKey"
   },
   "Facebook": {
-    "AppId": Facebook_AppId,
-    "AppSecret": Facebook_AppSecret
+    "AppId": "Facebook_AppId",
+    "AppSecret": "Facebook_AppSecret"
   },
   "PostMark": {
-    "ServerApiToken": PostMark_Token
+    "ServerApiToken": "PostMark_Token"
   }
 }
 ```
